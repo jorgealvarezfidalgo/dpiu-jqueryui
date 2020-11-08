@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>jQuery UI Draggable - Events</title>
+		<link rel="stylesheet" href="jquery-ui.min.css">
+		<script src="external/jquery/jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<script>
+			$(function() {
+				$("#tabs").tabs();
+			});
+		</script>
+	</head>
+	<style>
+			img {
+				width: 230px;
+				height: 300px;
+			}
+			.image {
+				width: 230px;
+				float: left;
+				margin: 1em;
+			}
+			.ui-tabs-panel {
+				height: 400px;
+			}
+		</style>
+	<body>
+		<div id="tabs">
+			<!-- Pestañas -->
+			<ul>
+				<li>
+					<a href="#tabs-1">El Mago</a>
+				</li>
+				<li>
+					<a href="#tabs-2">El Emperador</a>
+				</li>
+				<li>
+					<a href="#tabs-3">El Hierofante</a>
+				</li>
+				<li>
+					<a href="#tabs-4">El Ermitaño</a>
+				</li>
+				<li>
+					<a href="#tabs-5">La Estrella</a>
+				</li>
+				<li>
+					<a href="#tabs-6">El Mundo</a>
+				</li>
+			</ul>
+			<!-- Contenido -->
+			<div id="tabs-1">
+				<div class="image"><img src="images/carta1.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+			<div id="tabs-2">
+				<div class="image"><img src="images/carta2.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+			<div id="tabs-3">
+				<div class="image"><img src="images/carta3.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+			<div id="tabs-4">
+				<div class="image"><img src="images/carta4.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+			<div id="tabs-5">
+				<div class="image"><img src="images/carta5.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+			<div id="tabs-6">
+				<div class="image"><img src="images/carta6.png"/></div>
+				<p>
+					CENSURADO PARA DESCLASIFICACIÓN
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

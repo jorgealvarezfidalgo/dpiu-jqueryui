@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Componente 1</title>
+		<link rel="stylesheet" href="jquery-ui.min.css">
+		<script src="external/jquery/jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<style>
+			h4 {
+				margin: 0;
+				text-align: center;
+			}
+			button {
+				margin: auto;
+				display: block;
+			}
+			#feedback {
+				font-size: 1.4em;
+			}
+			#selectable .ui-selecting {
+				background: #FECA40;
+			}
+			#selectable .ui-selected {
+				background: #F39814;
+				color: white;
+			}
+			#selectable {
+				list-style-type: none;
+				margin: auto;
+				padding: 0;
+				width: 60%;
+				height: 150px;
+			}
+			#selectable div {
+				list-style-type: none;
+				float: left;
+				display: grid;
+			}
+			#selectable .franja {
+				margin: 3px;
+				padding: 1px;
+				float: left;
+				width: 100px;
+				height: 30px;
+				font-size: 1em;
+				text-align: center;
+			}
+		</style>
+		<script>
+			var numSel = 0;
+			$(function() {
+				$("#selectable").selectable({
+					filter: ".franja",
+					selecting: function(event, ui) { 
+						 if ($(".ui-selected, .ui-selecting").length > 3) {
+						   $('.ui-selecting').removeClass("ui-selecting");
+						 }
+					   }
+				});
+			});
+			$(function() {
+				$("#datepicker").datepicker({
+					changeMonth : true,
+					changeYear : true,
+					defaultDate: new Date(),
+					dateFormat: "dd/mm/yy",
+					onSelect: function(dateText, inst) {
+						
+						var date = $('#datepicker').datepicker('getDate');
+						date.setDate(date.getDate() + 1);
+						for (let i = 0; i < 7; i++) {
+							let day = date.getDate()
+							let month = date.getMonth() + 1
+							let year = date.getFullYear()
+
+							if(month < 10){
+								$("#dia" + i).text(day + "/0" + month + "/" + year);
+								$("#columna" + i + " div").each(function( index ) {
+								  $( this ).attr("data-dia", day + "/0" + month + "/" + year);
+								});
+							}
+							else{
+								$("#dia" + i).text(day + "/" + month + "/" + year);
+								$("#columna" + i + " div").each(function( index ) {
+								  $( this ).attr("data-dia", day + "/" + month + "/" + year);
+								});
+							 }					
+							date.setDate(date.getDate() + 1);
+						}
+						$("button").prop('disabled', false);
+					}
+				});
+			});
+			$("#datepicker").datepicker( "setDate", new Date() );
+		</script>
+	</head>
+	<body>
+			<label>Fecha:</label>
+			<input type="text" id="datepicker">
+		<div id="selectable">		
+		</div>
+		<script>
+		for (let i = 0; i < 7; i++) {
+			let franjas = "<div id=\"columna" + i + "\"><h4 id=\"dia" + i + "\"></h4><div data-dia=\"\" class=\"franja ui-widget-content\">" +
+				"Mañana" +
+			"</div>" +
+			"<div data-dia=\"\" class=\"franja ui-widget-content\">" +
+				"Tarde" +
+			"</div>" +
+			"<div data-dia=\"\" class=\"franja ui-widget-content\">" +
+				"Noche" +
+			"</div></div>";
+			$("#selectable").append(franjas);
+		}
+		</script>
+		<button onclick="seleccionar()" disabled>Seleccionar</button>
+		<div id="dialog-confirm" title="Confirmar selección">
+		<p id="descsel" style="display: none;">Se han seleccionado las siguientes franjas:</p>
+		<ol id="selecciones">
+		</ol>
+		</div>
+		<script>
+			function seleccionar() {
+				if ($(".ui-selected").length < 2) {
+					alert("Seleccione al menos 2 franjas horarias");
+				}
+				else {
+				
+					let franjas = "";
+					for (let i = 0; i < $(".ui-selected").length; i++) {
+						franjas += "<li>" + $(".ui-selected").get(i).innerText + " del día " + $(".ui-selected").get(i).attributes["data-dia"].nodeValue + "</li>";
+					}
+					$("#selecciones").html(franjas);
+					$("#descsel").attr("style", "display: inherit;");
+					
+					$("#dialog-confirm").dialog({
+					modal : true,
+					resizable : false,
+					height : 300,
+					width : 400,
+					buttons : {
+						"Aceptar" : function() {
+							$(this).dialog("close");
+						},
+						"Cancelar": function() {
+							$(this).dialog("close");
+						}
+					}
+					
+				});
+				}
+			}
+		</script>
+	</body>
+</html>

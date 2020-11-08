@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Componente 2</title>
+		<link rel="stylesheet" href="jquery-ui.min.css">
+		<script src="external/jquery/jquery.js"></script>
+		<script src="jquery-ui.min.js"></script>
+		<style>
+			.toggler {
+				width: 500px;
+				height: 200px;
+			}
+			#button {
+				padding: .5em 1em;
+				text-decoration: none;
+			}
+			#effect {
+				width: 240px;
+				height: 135px;
+				padding: 0.4em;
+				position: relative;
+			}
+			#effect h3 {
+				margin: 0;
+				padding: 0.4em;
+				text-align: center;
+			}
+			img {
+				width: 200px;
+				height: 270px;
+			}
+			body div {
+				float: left;
+			}
+			#juego div {
+				float: left;
+				min-width: 200px;
+				margin: 1.5em;
+			}
+			#juego .ui-effects-wrapper {
+				min-width: 248px;
+			}
+			#juego div:nth-child(5), body div:nth-child(9) {
+				clear: left;
+			}
+			
+		</style>
+		<script>
+		let cartas = ["carta1.png", "carta2.png", "carta3.png", "carta4.png","carta5.png","carta6.png"];
+		let descubiertas = { "carta1.png" : 0,
+			"carta2.png": 0,
+			"carta3.png": 0,
+			"carta4.png": 0,
+			"carta5.png": 0,
+			"carta6.png": 0
+		}
+		let clicks = {
+			"carta1.png" : 0,
+			"carta2.png": 0,
+			"carta3.png": 0,
+			"carta4.png": 0,
+			"carta5.png": 0,
+			"carta6.png": 0
+		}
+		// run the currently selected effect
+		function runEffect(index) {
+			// get effect type from
+			var selectedEffect = "fold";
+
+			// run the effect
+			$("#carta" + index).hide(selectedEffect, {}, 500, callback);
+			
+			function callback() {
+				darVuelta(index);
+				$("#carta" + index).show("fold", {}, 500);
+				$("#carta" + index).prop("onclick", null).off("click");
+				
+				let carta = $("#carta" + index + " img").attr("data-car");
+				if(descubiertas[carta] === 2) {
+				$('a[data-car="' + carta + '"]').each(function() {
+					$(this).attr("href", "cartas.html#tabs-" + carta.replace("carta", "").replace(".png", ""));
+				});
+				}
+				
+				for(i in cartas) {
+					let carta = cartas[i];
+					if(descubiertas[carta] < 2) {
+						clicks[carta] += 1; 
+					}
+					console.log(descubiertas);
+					$("#clicks" + i).text(clicks[carta]);
+				}	
+			};
+		};
+
+		</script>
+	</head>
+	<body>
+		<div id="juego"></div>
+		<div>
+		<p>Clicks para revelar la pareja de Magos: <span id="clicks0">0</span></p>
+		<p>Clicks para revelar la pareja de Emperadores: <span id="clicks1">0</span></p>
+		<p>Clicks para revelar la pareja de Hierofantes: <span id="clicks2">0</span></p>
+		<p>Clicks para revelar la pareja de Ermitaños: <span id="clicks3">0</span></p>
+		<p>Clicks para revelar la pareja de Estrellas: <span id="clicks4">0</span></p>
+		<p>Clicks para revelar la pareja de Mundos: <span id="clicks5">0</span></p>
+		</div>
+		<script>
+		for(let i = 0; i < 12; i++) {
+			$("#juego").append("<div id=\"carta" + i + "\"><a><img src=\"./images/reverso.jpg\" data-car=\"\"></img></a></div>");
+			$("#carta" + i).click(function() {
+				runEffect(i);
+				let sel = $("#carta" + i + " img");
+				descubiertas[sel.attr("data-car")] = descubiertas[sel.attr("data-car")] + 1;				
+			});
+		}
+		
+		let divOcupados = [];
+		for (carta in cartas) {
+			for(let i = 0; i < 2; i++) {
+				let div = Math.floor(Math.random() * 12);
+				while(divOcupados.includes(div)) {
+					div = Math.floor(Math.random() * 12);
+				}
+				divOcupados.push(div);
+				$("#carta" + div + " img").attr("data-car", cartas[carta]);
+				$("#carta" + div + " a").attr("data-car", cartas[carta]);
+			}
+		}
+		
+		function darVuelta(id) {
+			let sel = $("#carta" + id + " img");
+			sel.attr("src", "./images/" + sel.attr("data-car"));
+		}
+		
+	</script>
+	</body>
+	
+</html>
